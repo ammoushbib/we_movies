@@ -1,0 +1,94 @@
+/* Add this to public/css/navbar.css */
+/* Add this to public/css/navbar.css */
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.left-panel {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.right-panel {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.left-panel ul,
+.right-panel ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.left-panel ul li,
+.right-panel ul li {
+    margin-bottom: 10px;
+}
+
+.left-panel ul li a,
+.right-panel ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.left-panel ul li a:hover,
+.right-panel ul li a:hover {
+    text-decoration: underline;
+}
+
+.movie-item {
+    margin-bottom: 20px;
+}
+
+.movie-card {
+    display: flex;
+    align-items: flex-start;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.movie-card img {
+    margin-right: 20px;
+    border-radius: 5px;
+}
+
+.movie-info {
+    max-width: 600px;
+}
+
+.movie-info h3 {
+    margin: 0 0 10px;
+}
+
+.movie-info p {
+    margin: 0 0 10px;
+    color: #666;
+}
+
+.rating {
+    font-weight: bold;
+    color: #333;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+footer p {
+    margin: 0;
+    padding: 0;
+}
