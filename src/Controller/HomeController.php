@@ -23,12 +23,22 @@ class HomeController extends AbstractController
         $movies = $genreId ? $this->movieService->getMoviesByGenre($genreId)['results'] : $this->movieService->getPopularMovies()['results'];
 
         $bestRatedMovie = array_shift($movies);
+        $bestRatedMovieVideos = $this->movieService->getMovieVideos($bestRatedMovie['id']);
 
+        $bestRatedMovieTrailer = array_filter($bestRatedMovieVideos['results'], function($video) {
+            return $video['type'] === 'Trailer';
+        });
+
+        $bestRatedMovieTrailer = reset($bestRatedMovieTrailer);
+        if ($bestRatedMovieTrailer) {
+            $bestRatedMovieTrailer['url'] = 'https://www.youtube.com/embed/' . $bestRatedMovieTrailer['key'];
+        }
 
         return $this->render('home/index.html.twig', [
             'genres' => $genres['genres'],
             'movies' => $movies,
-            'best_rated_movie' => $bestRatedMovie
+            'best_rated_movie' => $bestRatedMovie,
+            'best_rated_movie_trailer' => $bestRatedMovieTrailer
         ]);
     }
 
