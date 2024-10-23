@@ -19,7 +19,8 @@ class HomeController extends AbstractController
     public function index(Request $request): Response
     {
         $genres = $this->movieService->getGenres();
-        $movies = $this->movieService->getTopRatedMovies()['results'];
+        $genreId = $request->get('genre_id');
+        $movies = $genreId ? $this->movieService->getMoviesByGenre($genreId)['results'] : $this->movieService->getPopularMovies()['results'];
 
         $bestRatedMovie = array_shift($movies);
 

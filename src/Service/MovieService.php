@@ -107,4 +107,17 @@ class MovieService
         return $response->toArray();
     }
 
+    public function getMoviesByGenre(mixed $genreId)
+    {
+        $response = $this->client->request('GET', "https://api.themoviedb.org/3/discover/movie", [
+            'query' => [
+                'api_key' => $this->apiKey,
+                'with_genres' => $genreId,
+            ],
+        ]);
+
+
+        return $response->toArray();
+    }
+
 }

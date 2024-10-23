@@ -38,7 +38,7 @@ class MovieController extends AbstractController
 
         $trailer = reset($trailer);
         if ($trailer) {
-            $trailer['url'] = 'https://www.youtube.com/watch?v=' . $trailer['key'];
+            $trailer['url'] = 'https://www.youtube.com/embed/' . $trailer['key'];
         }
 
         return $this->render('movie/play.html.twig', [
