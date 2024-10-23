@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home - We Movies{% endblock %}
+
+{% block body %}
+    <h1>Welcome to We Movies</h1>
+    <form method="get" action="{{ path('app_home') }}">
+        <input type="text" name="search" placeholder="Search for movies...">
+        <select name="genre">
+            <option value="">All Genres</option>
+            <!-- Add genre options here -->
+        </select>
+        <button type="submit">Search</button>
+    </form>
+    <h2>Most Rated Movies</h2>
+    <ul>
+        {% for movie in movies %}
+            <li>
+                <a href="{{ path('movie_play', {id: movie.id}) }}">{{ movie.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

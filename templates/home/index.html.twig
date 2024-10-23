@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Movie List{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="left-panel">
+            <h2>Genres</h2>
+            <ul>
+                {% for genre in genres %}
+                    <li>
+                        <a href="">{{ genre.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="right-panel">
+            <h2>Most Rated Movies</h2>
+            <div id="best-rated-panel" class="carousel">
+                <div class="carousel-item">
+                    <img src="{{ image_url(best_rated_movie.poster_path) }}"
+                         alt="{{ best_rated_movie.title }}">
+                    <div class="carousel-caption">
+                        <h3>{{ best_rated_movie.title }}</h3>
+                        <p>{{ best_rated_movie.overview }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-panel">
+                <ul>
+                    {% for movie in movies %}
+                        <li class="movie-item">
+                            <a href="{{ path('movie_play', {id: movie.id}) }}">
+                                <div class="movie-card">
+                                    <img src="{{ image_url(movie.poster_path) }}"
+                                         alt="{{ movie.title }}">
+                                    <div class="movie-info">
+                                        <h3>{{ movie.title }}</h3>
+                                        <h4> {{ movie.release_date | date("Y") }}</h4>
+                                        <div class="rating">
+                                            {% for i in 1..5 %}
+                                                {% if i <= (movie.vote_average / 2) %}
+                                                    <span class="star filled">&#9733;</span>
+                                                {% else %}
+                                                    <span class="star">&#9734;</span>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <b>({{ movie.vote_count }} votes)</b>
+                                        </div>
+                                        <p>{{ movie.overview }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="movie-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="movie-details"></div>
+        </div>
+    </div>
+{% endblock %}
