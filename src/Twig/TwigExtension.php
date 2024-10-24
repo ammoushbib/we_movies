@@ -14,7 +14,7 @@ class TwigExtension extends AbstractExtension
         ];
     }
 
-    public function generateImageUrl(string $imagePath): string
+    public function generateImageUrl(?string $imagePath): string
     {
         $baseUrl = 'https://media.themoviedb.org/t/p/w220_and_h330_face';
 

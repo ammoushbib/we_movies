@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace App\Service;
 
 use App\Constant\TMDBConstant;
-use App\Service\MovieService;
 
 class DecoratorService
 {

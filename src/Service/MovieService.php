@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Constant\TMDBConstant;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -12,7 +13,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class MovieService
 {
     private HttpClientInterface $client;
-    private $apiKey;
+    private string $apiKey;
 
     public function __construct(HttpClientInterface $client, string $apiKey)
     {
@@ -27,11 +28,12 @@ class MovieService
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function getPopularMovies(): array
+    public function getPopularMovies(int $page): array
     {
-        $response = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/popular', [
+        $response = $this->client->request('GET', TMDBConstant::TMDB_HOST . TMDBConstant::TMDB_POPULAR_ENDPOINT, [
             'query' => [
                 'api_key' => $this->apiKey,
+                'page' => $page
             ],
         ]);
 
@@ -47,7 +49,7 @@ class MovieService
      */
     public function getMovieDetails(int $movieId): array
     {
-        $response = $this->client->request('GET', "https://api.themoviedb.org/3/movie/{$movieId}", [
+        $response = $this->client->request('GET', TMDBConstant::TMDB_HOST . TMDBConstant::TMDB_MOVIE_DETAIL_ENDPOINT . $movieId, [
             'query' => [
                 'api_key' => $this->apiKey,
             ],
@@ -55,41 +57,26 @@ class MovieService
 
         return $response->toArray();
     }
-
-    public function getTopRatedMovies(): array
-    {
-        $response = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/top_rated', [
-            'query' => [
-                'api_key' => $this->apiKey,
-            ],
-        ]);
-
-
-        return $response->toArray();
-    }
-
 
     public function getGenres(): array
     {
-        $response = $this->client->request('GET', 'https://api.themoviedb.org/3/genre/movie/list', [
+        $response = $this->client->request('GET', TMDBConstant::TMDB_HOST . TMDBConstant::TMDB_GENRE_LIST_ENDPOINT, [
             'query' => [
                 'api_key' => $this->apiKey,
             ],
         ]);
-
 
         return $response->toArray();
     }
 
     public function searchMovies(string $query): array
     {
-        $response = $this->client->request('GET', 'https://api.themoviedb.org/3/search/movie', [
+        $response = $this->client->request('GET', TMDBConstant::TMDB_HOST . TMDBConstant::TMDB_MOVIE_SEARCH_ENDPOINT, [
             'query' => [
                 'api_key' => $this->apiKey,
                 'query' => $query,
             ],
         ]);
-
         $results = $response->toArray()['results'];
 
         return array_slice($results, 0, 5);
@@ -97,25 +84,24 @@ class MovieService
 
     public function getMovieVideos(int $movieId): array
     {
-        $response = $this->client->request('GET', "https://api.themoviedb.org/3/movie/{$movieId}/videos", [
+        $response = $this->client->request('GET', TMDBConstant::TMDB_HOST . "/movie/{$movieId}/videos", [
             'query' => [
                 'api_key' => $this->apiKey,
             ],
         ]);
-
 
         return $response->toArray();
     }
 
-    public function getMoviesByGenre(mixed $genreId)
+    public function getMoviesByGenre(int $genreId, int $page): array
     {
-        $response = $this->client->request('GET', "https://api.themoviedb.org/3/discover/movie", [
+        $response = $this->client->request('GET', TMDBConstant::TMDB_HOST . TMDBConstant::TMDB_MOVIE_PER_GENRE, [
             'query' => [
                 'api_key' => $this->apiKey,
                 'with_genres' => $genreId,
+                'page' => $page
             ],
         ]);
-
 
         return $response->toArray();
     }

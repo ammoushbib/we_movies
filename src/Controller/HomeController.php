@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Constant\TMDBConstant;
+use App\Service\DecoratorService;
 use App\Service\MovieService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,35 +13,23 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    public function __construct(private MovieService $movieService)
+    public function __construct(private MovieService $movieService, DecoratorService $decoratorService)
     {
         $this->movieService = $movieService;
+        $this->decoratorService = $decoratorService;
     }
     #[Route('/', name: 'app_home')]
     public function index(Request $request): Response
     {
-        $genres = $this->movieService->getGenres();
-        $genreId = $request->get('genre_id');
-        $movies = $genreId ? $this->movieService->getMoviesByGenre($genreId)['results'] : $this->movieService->getPopularMovies()['results'];
+        $data = [
+            'page' => $request->query->getInt('page', 1),
+            'genre_id' => $request->get('genre_id')
+        ];
 
-        $bestRatedMovie = array_shift($movies);
-        $bestRatedMovieVideos = $this->movieService->getMovieVideos($bestRatedMovie['id']);
+        $data = $this->decoratorService->homeDecorator($data);
 
-        $bestRatedMovieTrailer = array_filter($bestRatedMovieVideos['results'], function($video) {
-            return $video['type'] === 'Trailer';
-        });
+        return $this->render('home/index.html.twig', $data);
 
-        $bestRatedMovieTrailer = reset($bestRatedMovieTrailer);
-        if ($bestRatedMovieTrailer) {
-            $bestRatedMovieTrailer['url'] = 'https://www.youtube.com/embed/' . $bestRatedMovieTrailer['key'];
-        }
-
-        return $this->render('home/index.html.twig', [
-            'genres' => $genres['genres'],
-            'movies' => $movies,
-            'best_rated_movie' => $bestRatedMovie,
-            'best_rated_movie_trailer' => $bestRatedMovieTrailer
-        ]);
     }
 
     #[Route('/search', name: 'search_movies')]
@@ -49,5 +39,18 @@ class HomeController extends AbstractController
         $movies = $this->movieService->searchMovies($query);
 
         return new JsonResponse($movies);
+    }
+
+    #[Route('/movies/{id}', name: 'movie_play')]
+    public function plays(int $id): Response
+    {
+        $movie = $this->movieService->getMovieDetails($id);
+        $trailer = $this->decoratorService->getTrailer($id);
+        $movie['full_poster_url'] = $this->decoratorService->generateImageUrl($movie['poster_path']);
+
+        return new JsonResponse([
+            'movie' => $movie,
+            'trailer' => $trailer ? TMDBConstant::YOUTUBE_EMBED_URL . $trailer['key'] : null
+        ]);
     }
 }
