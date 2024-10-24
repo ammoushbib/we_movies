@@ -21,7 +21,7 @@ class DecoratorService
         $moviesResult = $genreId ? $this->movieService->getMoviesByGenre($genreId, $currentPage) : $this->movieService->getPopularMovies($currentPage);
 
         $movies = $moviesResult['results'];
-        $totalPages = ($moviesResult['total_pages'] > 500) ? 500 : $moviesResult['total_pages'];
+        $totalPages = ($moviesResult['total_pages'] > TMDBConstant::TMDB_MAX_PAGINATION) ? TMDBConstant::TMDB_MAX_PAGINATION : $moviesResult['total_pages'];
 
         $bestRatedMovie = array_shift($movies);
 
@@ -55,7 +55,6 @@ class DecoratorService
 
     public function generateImageUrl(?string $imagePath): string
     {
-
         return TMDBConstant::TMDB_POSTER_URL . $imagePath;
     }
 }
