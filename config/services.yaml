@@ -25,3 +25,5 @@ services:
     App\Service\MovieService:
         arguments:
             $apiKey: '%env(TMDB_API_KEY)%'
+    App\EventListener\ExceptionListener:
+        tags: [ kernel.event_listener ]

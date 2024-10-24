@@ -4,8 +4,8 @@ This project is a web application that allows users to search for movies, view d
 
 ## Technologies Used
 
-- PHP
-- Symfony
+- PHP 8.0 or higher
+- Symfony 5.4
 - JavaScript
 - Twig
 - Composer
@@ -15,8 +15,8 @@ This project is a web application that allows users to search for movies, view d
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/moviesearch.git
-    cd moviesearch
+    git clone https://github.com/ammoushbib/we_movies.git
+    cd we_movies
     ```
 
 2. Install dependencies:
@@ -27,9 +27,7 @@ This project is a web application that allows users to search for movies, view d
 3. Set up environment variables:
     - Create a `.env.local` file in the root directory.
     - Add your TMDb API key:
-        ```env
-        TMDB_API_KEY=your_api_key_here
-        ```
+        php bin/console secrets:set TMDB_API_KEY
 
 4. Start the Symfony server:
     ```bash
@@ -49,7 +47,7 @@ This project is a web application that allows users to search for movies, view d
 
 ## Additional Information
 
-- This project uses The Movie Database (TMDb) API. You need to sign up for an API key at [TMDb](https://www.themoviedb.org/documentation/api).
+- This project uses The Movie Database (TMDb) API. You need to sign up for an API key at [TMDb](https://developer.themoviedb.org/docs/getting-started).
 
 ## Acknowledgments
 

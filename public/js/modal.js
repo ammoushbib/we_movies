@@ -8,3 +8,7 @@ window.addEventListener('click', function(event) {
         modal.style.display = 'none';
     }
 });
+
+document.querySelectorAll('.open-modal-btn').forEach(button => {
+    button.addEventListener('click', modalCreator);
+});
