@@ -25,7 +25,7 @@ var modalCreator = function() {
                 ratingContainer.appendChild(star);
             }
 
-            ratingContainer.innerHTML += "<b>(" + movieDetails.movie.vote_count + "Votes )</b>";
+            ratingContainer.innerHTML += "<b> ( " + movieDetails.movie.vote_count + " Votes )</b>";
 
             modal.style.display = 'block';
         });

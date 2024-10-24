@@ -13,10 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    public function __construct(private MovieService $movieService, DecoratorService $decoratorService)
+
+    public function __construct(private MovieService $movieService, private DecoratorService $decoratorService)
     {
-        $this->movieService = $movieService;
-        $this->decoratorService = $decoratorService;
     }
     #[Route('/', name: 'app_home')]
     public function index(Request $request): Response

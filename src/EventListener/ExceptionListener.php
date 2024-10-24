@@ -13,7 +13,7 @@ class ExceptionListener
         // You get the exception object from the received event
         $exception = $event->getThrowable();
         $message = sprintf(
-            'Bad ! Issue happened on our Third Party api with code: %s',
+            'Bad ! Issue happened on our Third Party api Themovies DB with code: %s',
             $exception->getCode()
         );
 
@@ -21,8 +21,6 @@ class ExceptionListener
         $response = new Response();
         $response->setContent($message);
 
-        // HttpExceptionInterface is a special type of exception that
-        // holds status code and header details
         if ($exception instanceof HttpExceptionInterface) {
             $response->setStatusCode($exception->getStatusCode());
             $response->headers->replace($exception->getHeaders());
