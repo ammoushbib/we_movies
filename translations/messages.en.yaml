@@ -1,0 +1,7 @@
+app_name: We Movies
+templates:
+    home:
+        movie_title: "Movie Title"
+        movie_description: "Movie Description"
+        movie_votes: "Votes"
+        movie_most_rated: "Most Rated"
