@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'app_name' | trans }}{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="left-panel">
+            <h2>Genres</h2>
+            <ul>
+                {% for genre in genres %}
+                    <li>
+                        <a href="{{ path('app_home', {'genre_id' : genre.id}) }}"
+                           class="{% if genre.id == genre_id %}filtered{% endif %}">{{ genre.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="right-panel">
+            <h2>{{ 'templates.home.movie_most_rated' | trans }}</h2>
+            <div id="best-rated-panel" class="carousel">
+                <div class="carousel-item">
+                    <div class="trailer-container">
+                        <iframe width="100%" height="550" src="{{ best_rated_movie_trailer.url }}"
+                                allowfullscreen></iframe>
+                    </div>
+                    <div class="movie-details">
+                        <div class="movie-caption">
+                            <img src="{{ image_url(best_rated_movie.poster_path) }}" alt="{{ best_rated_movie.title }}">
+                            <h3>{{ best_rated_movie.title }}</h3>
+                            <div class="rating">
+                                {% for i in 1..5 %}
+                                    {% if i <= (best_rated_movie.vote_average / 2) %}
+                                        <span class="star filled">&#9733;</span>
+                                    {% else %}
+                                        <span class="star">&#9734;</span>
+                                    {% endif %}
+                                {% endfor %}
+                                <b>({{ best_rated_movie.vote_count }} {{ 'templates.home.movie_votes' | trans }})</b>
+                            </div>
+                            <p>{{ best_rated_movie.overview }}</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-panel">
+                <ul>
+                    {% for movie in movies %}
+                        <li class="movie-item">
+                            <div class="movie-card">
+                                <img src="{{ image_url(movie.poster_path) }}" alt="{{ movie.title }}">
+                                <div class="movie-info">
+                                    <h3>{{ movie.title }}</h3>
+                                    <h4>{{ movie.release_date | date("Y") }}</h4>
+                                    <div class="rating">
+                                        {% for i in 1..5 %}
+                                            {% if i <= (movie.vote_average / 2) %}
+                                                <span class="star filled">&#9733;</span>
+                                            {% else %}
+                                                <span class="star">&#9734;</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <b>({{ movie.vote_count }} votes)</b>
+                                    </div>
+                                    <p>{{ movie.overview }}</p>
+                                    <button class="open-modal-btn" data-movie-id="{{ movie.id }}">Show Details</button>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="pagination">
+                {% set start_page = max(2, current_page - 2) %}
+                {% set end_page = min(total_pages, current_page + 2) %}
+
+                {% if start_page > 1 %}
+                    <a href="{{ path('app_home', {'genre_id':genre_id, 'page': 1}) }}" class="page-link">1</a>
+                    {% if start_page > 2 %}
+                        <span class="page-link">...</span>
+                    {% endif %}
+                {% endif %}
+
+                {% for page in start_page..end_page %}
+                    <a href="{{ path('app_home', {'genre_id':genre_id, 'page': page}) }}"
+                       class="page-link {% if current_page == page %}active{% endif %}">{{ page }}</a>
+                {% endfor %}
+
+                {% if end_page < total_pages %}
+                    {% if end_page < total_pages - 1 %}
+                        <span class="page-link">...</span>
+                    {% endif %}
+                    <a href="{{ path('app_home', {'genre_id':genre_id, 'page': total_pages}) }}"
+                       class="page-link">{{ total_pages }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div id="movie-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="movie-details">
+                <div class="trailer-container">
+                    <iframe id="modal-trailer" width="100%" height="550" src="" allowfullscreen></iframe>
+                </div>
+                <div class="movie-details">
+                    <div class="movie-caption">
+                        <h3 id="modal-title"></h3>
+                        <div class="rating" id="modal-rating"></div>
+                        <p id="modal-overview"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}We Movies {% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+    {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+<header>
+    <h1>
+        <a href="{{ path('app_home') }}">
+            We Movies
+        </a>
+    </h1>
+    <nav>
+        <ul>
+            <li>
+                <div class="search-panel">
+                    <input type="text" id="search-input" placeholder="Search for movies...">
+                    <button id="clear-search" style="display: none;">&times;</button>
+                    <ul id="search-results"></ul>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main>
+    {% block body %}{% endblock %}
+</main>
+<footer>
+    <p>&copy; 2023 We Movies</p>
+</footer>
+<script type="application/javascript" src="{{ asset('js/search.js') }}"></script>
+<script type="application/javascript" src="{{ asset('js/modal.js') }}"></script>
+</body>
+</html>
